@@ -1,0 +1,204 @@
+body {
+  padding: 0px;
+  margin: 0px;
+}
+
+.main {
+  display: flex;
+  min-height: 100vh;
+}
+
+.main__left {
+
+  display: flex;
+  width: 0px;
+  flex-direction: column;
+}
+
+.main__leftVideo {
+  background-color: #3c3b37;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  flex: 0.95;
+}
+
+.main__leftControls {
+  flex: 0.05;
+}
+
+.main__right {
+  flex: 30;
+  width: 0px;
+}
+
+#video-grid {
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  display: none;
+}
+
+video {
+  margin: 7px;
+  height: 262.5px;
+  width: 350px;
+  object-fit: contain;
+}
+
+video:hover {
+  border: 3px solid white;
+}
+
+.main__leftControls {
+
+  justify-content: center;
+  align-content: center;
+  color: #777774;
+  background-color: #33322f;
+  display: flex;
+  padding: 10px;
+}
+
+.main__leftControls__Block {
+  align-items: center;
+  display: flex;
+}
+
+.main__leftControls__Buttons>span {
+  padding-top: 5px;
+}
+
+.main__leftControls__Buttons {
+  margin-top: 16px;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  min-width: 80px;
+}
+
+.main__leftControls__Buttons:hover {
+  color: white;
+  border-radius: 5px;
+}
+
+.main__leftControls__Buttons>i {
+  margin-bottom: 5px;
+  font-size: large;
+}
+
+.main__leftControls__ButtonsLeave {
+  align-items: center;
+  justify-content: center;
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  min-width: 80px;
+  border-radius: 5px;
+  color: #eb534b !important;
+  height: 60%;
+  margin-right: 10px;
+  transition: all 250ms ease-in-out;
+}
+
+.main__leftControls__ButtonsLeave:hover {
+  background-color: white;
+  color: #d2d2d2;
+  border: white 3px solid;
+  border-radius: 20px;
+}
+
+.main__right {
+  color: #f5f5f5;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #2a2926;
+  border-left: 1px solid #3d3d42;
+}
+
+.main__rightHeader {
+  text-align: center;
+  flex: 0.05;
+  width: 100%;
+  background-color: #21201f;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.main__chatWindow {
+  width: 100%;
+  height: 602px;
+  overflow-y: scroll;
+}
+
+.main__messageContainer {
+  width: 100%;
+  border: 1px solid grey;
+}
+
+.main__messageContainer input {
+  width: 90%;
+  padding: 10px;
+  background-color: transparent;
+  border: none;
+  color: #f5f5f5;
+}
+
+.leaveMeeting {
+  color: white;
+  text-decoration: none !important;
+}
+
+.leaveMeeting:hover {
+  color: #d2d2d2 !important;
+}
+
+.main__messageContainer input:focus {
+  outline: none;
+}
+
+.messages {
+  padding-inline-start: 10px;
+  color: white;
+  list-style: none;
+  line-height: 200%;
+}
+
+.unmute {
+  color: #cc3b33;
+}
+
+.leave-call {
+  margin-left: 11px;
+}
+
+.endCall {
+  height: 32px;
+  width: 40px;
+}
+
+#datetime {
+  font-size: 1.33rem;
+}
+
+.dtb {
+  margin-top: 23px;
+  color: #dbdbda;
+}
+
+.joinDepartment {
+  visibility: hidden;
+}
+
+#leaveRoomButton {
+  display: none;
+}

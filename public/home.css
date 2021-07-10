@@ -1,0 +1,198 @@
+body {
+  background-color: black;
+  background-color: #272a2c;
+  background-image: url("https://www.transparenttextures.com/patterns/brushed-alum.png");
+}
+
+.home {
+  min-height: 90vh;
+}
+
+.home__heading {
+  padding: 10px;
+  width: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(39, 42, 44, 0.95);
+}
+
+.home__heading img {
+  height: 70px;
+}
+
+.join__meeing {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.meeting-form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.join__meeing>.meeting-form label {
+  font-size: larger;
+  padding: 4px;
+}
+
+.join__meeing>.meeting-form input {
+  flex: 0.9;
+  margin: 10px;
+  padding: 5px;
+}
+
+.join__meeing button {
+  width: 10vw;
+}
+
+.create__meeting {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.create__meeting button {
+  width: 18vw;
+}
+
+@media only screen and (max-width: 600px) {
+  .by {
+    font-size: smaller;
+  }
+
+  .home__heading h3 {
+    margin: 10px;
+    font-size: larger !important;
+  }
+
+  .home__heading img {
+    height: 40px;
+  }
+
+  .join__meeing button {
+    width: 250px;
+  }
+
+  .create__meeting button {
+    width: 300px;
+  }
+}
+
+.background-img {
+  position: absolute;
+  margin-top: 0%;
+  margin-left: -2%;
+  height: 60%;
+  width: 101.5%;
+  z-index: -1;
+  opacity: 0.3;
+  -webkit-box-reflect: below;
+}
+
+.login-container {
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
+
+.login-logo {
+  position: relative;
+  margin-left: -41.5%;
+}
+
+.login-logo img {
+  position: absolute;
+  width: 20%;
+  margin-top: 19%;
+  background: #282726;
+  border-radius: 4.5rem;
+  padding: 5%;
+}
+
+.login-form-1 {
+  padding: 9%;
+  background: #282726;
+  box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
+}
+
+.login-form-1 h3 {
+  text-align: center;
+  margin-bottom: 12%;
+  color: #fff;
+}
+
+.login-form-2 {
+  padding: 9%;
+  background: #f05837;
+  box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
+}
+
+.login-form-2 h3 {
+  text-align: center;
+  margin-bottom: 12%;
+  color: #fff;
+}
+
+.btnSubmit {
+  font-weight: 600;
+  width: 50%;
+  color: #282726;
+  background-color: #fff;
+  border: none;
+  border-radius: 1.5rem;
+  padding: 2%;
+}
+
+.btnForgetPwd {
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.btnForgetPwd:hover {
+  text-decoration: none;
+  color: #fff;
+}
+
+.hh {
+  position: relative;
+  color: rgba(39, 42, 44, 0.95);
+  -webkit-text-stroke: 0.1vw rgba(39, 42, 44, 0.95);
+}
+
+.bigbox {
+  height: 30%;
+  width: 30%;
+}
+
+.hh::before {
+  content: attr(data-text);
+  position: absolute;
+  width: 0;
+  height: 100%;
+  color: white;
+  -webkit-text-stroke: 0vw rgba(39, 42, 44, 0.95);
+  border-right: 2px solid white;
+  overflow: hidden;
+  animation: animate 7s linear infinite;
+  font-style: italic;
+}
+
+
+
+@keyframes animate {
+  0% {
+    width: 0;
+  }
+
+  70% {
+    width: 100%;
+  }
+}

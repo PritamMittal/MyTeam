@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <!-- styling the ejs page -->
+  <style>
+    body {
+      padding: 0px;
+      margin: 0px;
+      max-height: 100%;
+    }
+
+    .joinDepartment {
+      visibility: hidden;
+    }
+
+    .main {
+      display: flex;
+      min-height: 100vh;
+      max-height: 1000px;
+    }
+
+    .main__left {
+
+      display: flex;
+      width: 0px;
+      flex-direction: column;
+    }
+
+    .main__leftVideo {
+      background-color: #B5EAEA;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-grow: 1;
+      flex: 0.95;
+    }
+
+    .main__leftControls {
+      flex: 0.05;
+    }
+
+    .main__right {
+      flex: 30;
+      width: 0px;
+      max-height: 100%;
+    }
+
+    #video-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      display: none;
+    }
+
+    video {
+      margin: 7px;
+      height: 262.5px;
+      width: 350px;
+      object-fit: contain;
+    }
+
+    .main__leftControls {
+
+      justify-content: center;
+      align-content: center;
+      color: #EDF6E5;
+      background-color: #F38BA0;
+      display: flex;
+      padding: 10px;
+    }
+
+    .main__leftControls__Block {
+      align-items: center;
+      display: flex;
+    }
+
+    .main__leftControls__Buttons>span {
+      padding-top: 5px;
+    }
+
+    .main__leftControls__Buttons {
+      margin-top: 16px;
+      align-items: center;
+      justify-content: center;
+      padding: 5px;
+
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      min-width: 80px;
+    }
+
+    .main__leftControls__Buttons:hover {
+      color: #D3D3D3;
+      border-radius: 5px;
+    }
+
+    .main__leftControls__Buttons>i {
+      margin-bottom: 5px;
+      font-size: large;
+    }
+
+    .main__leftControls__ButtonsLeave {
+      align-items: center;
+      justify-content: center;
+      padding: 8px 10px;
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      min-width: 80px;
+      border-radius: 5px;
+      color: #eb534b !important;
+      height: 60%;
+      margin-right: 10px;
+      transition: all 250ms ease-in-out;
+    }
+
+    .main__leftControls__ButtonsLeave:hover {
+      background-color: white;
+      color: #d2d2d2;
+      border: white 3px solid;
+      border-radius: 20px;
+    }
+
+    .main__right {
+      color: black;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-color: #FFBCBC;
+    }
+
+    .main__rightHeader {
+      text-align: center;
+      flex: 0.05;
+      width: 100%;
+      background-color: #FFBCBC;
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+
+    .main__chatWindow {
+      width: 100%;
+      background-color: #EDF6E5;
+      height: 602px;
+      overflow-y: scroll;
+    }
+
+    .main__messageContainer {
+      width: 100%;
+    }
+
+    .main__messageContainer input {
+      width: 90%;
+      padding: 10px;
+      background-color: transparent;
+      border: none;
+      color: black;
+
+    }
+
+    .leaveMeeting {
+      color: white;
+      text-decoration: none !important;
+    }
+
+    .leaveMeeting:hover {
+      color: #d2d2d2 !important;
+    }
+
+    .main__messageContainer input:focus {
+      outline: none;
+    }
+
+    .messages {
+      padding-inline-start: 10px;
+      color: black;
+      list-style: none;
+      line-height: 200%;
+    }
+
+    .unmute {
+      color: #cc3b33;
+    }
+
+    .leave-call {
+      margin-left: 11px;
+    }
+
+    video:hover {
+      border: 4px solid white;
+    }
+
+    .endCall {
+      height: 32px;
+      width: 40px;
+    }
+
+    #datetime {
+      font-size: 1.33rem;
+    }
+
+    .dtb {
+      margin-top: 23px;
+      color: #dbdbda;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      padding: 50px;
+      left: 0;
+      top: 0;
+      width: 400px;
+      height: 300px;
+      overflow: auto;
+      background-color: rgb(0, 0, 0);
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: auto;
+      padding: 20px;
+      border: 1px solid #888;
+    }
+
+    .close {
+      color: #aaaaaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: #000;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .columnCard {
+      float: left;
+      padding: 0 10px;
+    }
+
+    .rowCard {
+      margin: 0 -5px;
+      align-items: center;
+    }
+
+    .rowCard:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+
+    .card {
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+      padding: 30px;
+      padding-right: 10px;
+      text-align: center;
+      background-color: #f1f1f1;
+      width: 285px;
+      height: 400px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+
+    }
+
+    .modal-content:hover {
+      background-color: #f5f5f5;
+    }
+
+    .myBtn:hover {
+      color: #000;
+    }
+
+    #leaveRoomButton {
+      display: none;
+    }
+  </style>
+  <!-- linking all the stylesheets and scripts -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+  </script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
+  </script>
+  <script src="/socket.io/socket.io.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://kit.fontawesome.com/c939d0e917.js"></script>
+  <title>Mittalsoft</title>
+  <link
+    href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAACr/AA6/8AD/ewAAHrA2AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAzMzMwIiIiIDMzMzAiIiIgMzMzMCIiIiAzMzMwIiIiIDMzMzAiIiIgMzMzMCIiIiAzMzMwIiIiIAAAAAAAAAAAEREREEREREAREREQREREQBERERBERERAEREREEREREAREREQREREQBERERBERERAEREREEREREAREREQRERESAgAAAgIAAAICAAACAgAAAgIAAAICAAACAgAAA//8AAICAAACAgAAAgIAAAICAAACAgAAAgIAAAICAAACAgAAA"
+    rel="icon" type="image/x-icon" />
+  <!-- script for getting ROOM_ID -->
+  <script>
+    const ROOM_ID = "<%= room_id %>";
+  </script>
+</head>
+
+<body>
+  <!-- division for whole page -->
+  <div class="main">
+    <!-- division for the left department including the controls, video-grid and screen-grid -->
+    <div class="main__left joinDepartment" id="main-left" style="background-color: #B5EAEA; margin-top: 0px;">
+      <!-- adding the image element -->
+      <img src="https://i.ibb.co/L5GpZzY/header-Kids-removebg-preview.jpg"
+        style="height: 70px; width: 70%; margin-left: 16% ;margin-top: 10px;" alt="">
+      <!-- division for video-grid and screen-grid -->
+      <div class="main__leftVideo" style="width:100%;max-height:543px;overflow:auto">
+        <!-- video-grid -->
+        <div id="video-grid"></div>
+        <!-- screen-grid -->
+        <div id="screen-grid"></div>
+      </div>
+      <!-- division for controls -->
+      <div class="main__leftControls">
+        <!-- division for time  -->
+        <div class="main__leftControls__Block dtb">
+          <em>
+            <p><span id="datetime"></span></p>
+          </em>
+        </div>
+        <!-- division for muteUnmuteAudio and muteUnmuteVideo -->
+        <div class="main__leftControls__Block">
+          <div class="main__leftControls__Buttons Microphone" onclick="muteUnmuteAudio()">
+            <i class="fas fa-microphone"></i><span>Mute</span>
+          </div>
+          <div class="main__leftControls__Buttons VideoCamera" onclick="muteUnmuteVideo()">
+            <i class="fas fa-video fa-10x"></i><span>Stop Video</span>
+          </div>
+        </div>
+        <!-- division for screenSharing, hideChat, inviteButton and games(with a modal) -->
+        <div class="main__leftControls__Block">
+          <div class="main__leftControls__Buttons">
+            <i class="fas fa-share-square" onclick="screenSharing()"></i><span>Share Screen</span>
+          </div>
+          <div class="main__leftControls__Buttons">
+            <i class="far fa-sticky-note" onclick="openNotes()"></i><span>MyNotes</span>
+          </div>
+          <div class="main__leftControls__Buttons">
+            <i class="fas fa-comment-alt" onclick="hideChat()"></i><span>Chat</span>
+          </div>
+          <div id="inviteButton" class="main__leftControls__Buttons">
+            <i class="fas fa-user-plus"></i><span>Invite</span>
+          </div>
+          <div class="main__leftControls__Buttons">
+            <i class="fas fa-dice" id="myBtn" onmouseover="this.style.color='#FF5200'"
+              onmouseout="this.style.color='white'"></i><span>Games</span>
+          </div>
+          <!-- mymodal pops out on clicking out the games button -->
+          <div id="myModal" class="modal">
+            <div class="modal-content" style="width: 1050px;height: 500px;color:#000; background-color: #EDF6E5;">
+              <span class="close">&times;</span>
+              <!-- initializing the row for cards -->
+              <div class="rowCard">
+                <!-- card for first game  -->
+                <div class="columnCard">
+                  <div class="card" style="margin-right: 10px; margin-left: 25px;">
+                    <h2>Drum Kit <i style="font-size: 23px;" class="far fa-copyright"></i></h2>
+                    <p><img style="height: 150px;width: 250px; margin-left: -20px;"
+                        src="https://i.pinimg.com/736x/8a/62/37/8a623761d0aa532f96824b097500a40c.jpg" alt=""></p>
+                    <h4>Come on Let's play Drum</h4>
+                    <button type="button" class="btn btn-danger" style="padding-top:5px ; margin: 5px;">
+                      <p style="margin: 0px;"><a style="color:white" href="https://pritammittal.github.io/DrumKitNew/"
+                          target="_blank"> Click here to play</a></p>
+                    </button>
+                  </div>
+                </div>
+                <!-- card for second game  -->
+                <div class="columnCard">
+                  <div class="card" style="margin-right: 10px; margin-left: 10px;">
+                    <h2 style="
+                    width: 150%;
+                    margin-left: -63px;
+                ">Memory Game <i style="font-size: 23px;" class="far fa-copyright"></i></h2>
+                    <p><img style="height: 150px;width: 250px; margin-left: -20px;"
+                        src="data:image/png;base64,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"
+                        alt=""></p>
+                    <h4>Let's have a memory check</h4>
+                    <button type="button" class="btn btn-danger" style="padding-top:5px ; margin: 5px;">
+                      <p style="margin: 0px;"><a style="color:white" href="https://pritammittal.github.io/Memory_Game/"
+                          target="_blank"> Click here to play</a></p>
+                    </button>
+                  </div>
+                </div>
+                <!-- card for third game  -->
+                <div class="columnCard">
+                  <div class="card" style="margin-right: 10px; margin-left: 10px;">
+                    <h2>Chess</h2>
+                    <p><img style="height: 150px;width: 250px;margin-left: -20px;"
+                        src="https://image.freepik.com/free-vector/cartoon-character-playing-chess-game_29937-4053.jpg"
+                        alt=""></p>
+                    <h4>Every master was once a beginner</h4>
+                    <button type="button" class="btn btn-danger" style="padding-top:5px ; margin: 5px;">
+                      <p style="margin: 0px;"><a style="color:white" href="https://www.chess.com/play/online"
+                          target="_blank"> Click here to play</a></p>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- division for leaveVideoButton -->
+        <div class="main__leftControls__Block">
+          <i class="leaveMeeting">
+            <div class="main__leftControls__ButtonsLeave leave-call" onclick="exitCall()">
+              <img class="endCall" src="https://image.flaticon.com/icons/png/512/733/733497.png" alt="Hello"></img>
+              <div></div>
+          </i>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- division for main right which consists all the elements of chat window -->
+  <div class="main__right" id="main-right" style="margin-top: 0px;">
+    <!-- division for right header -->
+    <div class="main__rightHeader">
+      <h2>My Chat<button id="joinButton" onclick="callthis()"
+          style="margin-left: 1380px; margin-top: -35px; display: block;" class="btn btn-secondary">Join Video
+          Call</button><button id="leaveRoomButton" onclick="leaveTheRoom()"
+          style="margin-left: 1400px; margin-top: -35px;" class="btn btn-secondary">Leave Room</button></h2>
+    </div>
+    <!-- division for all the messages -->
+    <div class="main__chatWindow">
+      <ul class="messages"></ul>
+    </div>
+    <!-- division for typing the message -->
+    <div class="main__messageContainer">
+      <input id="chat_message" type="text" placeholder="Type message here ..." />
+    </div>
+  </div>
+  </div>
+
+  <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
+  <!-- including the script for room -->
+  <script>
+    const socket = io();
+    // defining all the variables and getting all the elements from html part
+    let myVideoStream;
+    let myScreenShare;
+    const videoGrid = document.getElementById("video-grid");
+    const screenGrid = document.getElementById("screen-grid");
+    const myVideo = document.createElement("video");
+    const myScreen = document.createElement("screen");
+    // setting my video as muted to avoid echo
+    myVideo.muted = true;
+    // initializing the prompt which asks the user for the name which he or she wants to enter with
+    const user = prompt("Enter your name");
+    // defining the new peer
+    var peer = new Peer(undefined, {
+      path: "/peerjs",
+      host: "/",
+      port: "443",
+    });
+
+    // allowing the webcam and microphone to connect with the system
+    navigator.mediaDevices
+      .getUserMedia({
+        video: true,
+        audio: true,
+      })
+      // promise
+      .then((stream) => {
+        // setting myVideoStream as the stream
+        myVideoStream = stream;
+        myVideoStream.getAudioTracks()[0].enabled = false;
+        myVideoStream.getVideoTracks()[0].enabled = false;
+        // adding the video to myScreen
+        appendVideoToVideo_Grid(myVideo, myVideoStream);
+        // answering the call
+        peer.on("call", (call) => {
+          call.answer(stream);
+          // creating the video as new element 
+          const video = document.createElement("video");
+          // adding the all video to all myScreen
+          call.on("stream", (userVideoStream) => {
+            appendVideoToVideo_Grid(video, userVideoStream);
+          });
+        });
+        // connect myself to all all the participants
+        socket.on("user-connected", (userId, userName) => {
+          console.log(userName);
+          setTimeout(newUserConnectionVideo, 1000, userId, stream, userName);
+        });
+      });
+
+    // video section comes in on joining the video call
+    function onEntry() {
+      document.getElementById("main-left").style.visibility = "visible";
+      document.getElementById("joinButton").style.display = "none";
+      document.getElementById("main-left").style.flexGrow = "80";
+      document.getElementById("main-right").style.maxWidth = "315px";
+      document.getElementById("video-grid").style.display = "flex";
+    }
+
+    // function enables on clicking join video meeting
+    function callthis() {
+      document.getElementById("joinButton").addEventListener("click", function () {
+        onEntry();
+        muteUnmuteAudio();
+        muteUnmuteVideo();
+
+      });
+    }
+
+    // adding the message to the message container on pressing enter
+    let text = $("input");
+    $("html").keydown((e) => {
+      if (e.which == 13 && text.val().length !== 0) {
+        socket.emit("message", text.val());
+        text.val("");
+      }
+    });
+
+    // appending the message to message container with username of the otheruser and if send by myself it is appended with "ME"
+    socket.on("createMessage", (message, userName) => {
+      console.log(userName);
+      var n = "ME";
+      if (userName !== user) {
+        n = userName;
+      }
+      if (n !== null)
+        $("ul").append(`<li class="messages"><b><i class="far fa-user-circle"></i>` + "  " + n +
+          `</b><br />${message}</li>`);
+      scrollToBottom();
+    });
+
+    // function to enable screen sharing on clicking the button screen share in room.ejs
+    function screenSharing() {
+      navigator.mediaDevices.getDisplayMedia({
+          video: true
+        })
+        .then((stream) => {
+          myScreenShare = stream;
+          appendScreenToScreen_Grid(myScreen, myScreenShare);
+
+          peer.on("call", (call) => {
+            call.answer(stream);
+            const screen = document.createElement("screen");
+            call.on("stream", (userScreenStream) => {
+              appendScreenToScreen_Grid(screen, userScreenStream);
+            });
+          });
+          socket.on("user-connected", (userId) => {
+            setTimeout(newUserConnectionScreen, 1000, userId, stream);
+          });
+        });
+    }
+    socket.emit("join-room", ROOM_ID);
+
+    // connecting the user to the server
+    peer.on("open", (id) => {
+      socket.emit("join-room", ROOM_ID, id, user);
+    });
+
+    // connecting myself to all the participants
+    const newUserConnectionVideo = (userId, stream, userName) => {
+      const call = peer.call(userId, stream);
+      const video = document.createElement("video");
+      call.on("stream", (userVideoStream) => {
+        appendVideoToVideo_Grid(video, userVideoStream, userName);
+      });
+    };
+
+    // connecting myscreen to all the participants 
+    const newUserConnectionScreen = (userId, stream) => {
+      const call = peer.call(userId, stream);
+      const screen = document.createElement("screen");
+      call.on("stream", (userScreenStream) => {
+        appendScreenToScreen_Grid(screen, userScreenStream);
+      });
+    };
+
+    // appending the video in video-grid
+    const appendVideoToVideo_Grid = (video, stream, userName) => {
+      video.srcObject = stream;
+      video.addEventListener("loadedmetadata", () => {
+        video.play();
+      });
+      videoGrid.appendChild(video);
+      video.controls = true;
+    };
+
+    // appending the screen in screen-grid
+    const appendScreenToScreen_Grid = (screen, stream) => {
+      screen.srcObject = stream;
+      screen.addEventListener("loadedmetadata", () => {
+        screen.play();
+      });
+      screenGrid.appendChild(screen);
+    };
+
+    // scroll function in chat window
+    const scrollToBottom = () => {
+      var d = $(".main__chatWindow");
+      d.scrollTop(d.prop("scrollHeight"));
+    };
+
+    // scroll function if video section overflows
+    const scrollToBottomVideo = () => {
+      var d = $("#video-grid");
+      d.scrollTop(d.prop("scrollHeight"));
+    };
+
+    // function to mute and unmute audio
+    const muteUnmuteAudio = () => {
+      const enabled = myVideoStream.getAudioTracks()[0].enabled;
+      if (enabled) {
+        myVideoStream.getAudioTracks()[0].enabled = false;
+        setUnmuteButton();
+      } else {
+        setMuteButton();
+        myVideoStream.getAudioTracks()[0].enabled = true;
+      }
+    };
+
+    // setting the innerhtml and icon after muting audio
+    const setMuteButton = () => {
+      const html = '<i class="fas fa-microphone"></i><span>Mute</span>';
+      document.querySelector(".Microphone").innerHTML = html;
+    };
+
+    // setting the innerhtml and icon after unmuting audio
+    const setUnmuteButton = () => {
+      const html =
+        '<i class="fas fa-microphone-slash unmute"></i><span>Unmute</span>';
+      document.querySelector(".Microphone").innerHTML = html;
+    };
+
+    // function to mute and unmute the video 
+    const muteUnmuteVideo = () => {
+      const enabled = myVideoStream.getVideoTracks()[0].enabled;
+      if (enabled) {
+        myVideoStream.getVideoTracks()[0].enabled = false;
+        setUnmuteVideoButton();
+      } else {
+        setMuteVideoButton();
+        myVideoStream.getVideoTracks()[0].enabled = true;
+      }
+    };
+
+    // setting the innerhtml and icon after muting video
+    const setMuteVideoButton = () => {
+      const html = '<i class="fas fa-video"></i><span>Stop Video</span>';
+      document.querySelector(".VideoCamera").innerHTML = html;
+    };
+
+    // setting the innerhtml and icon after unmuting video
+    const setUnmuteVideoButton = () => {
+      const html =
+        '<i class="fas fa-video-slash unmute"></i><span>Start Video</span>';
+      document.querySelector(".VideoCamera").innerHTML = html;
+    };
+
+    // exit the video call
+    const exitCall = () => {
+      if (confirm("Do you want to leave the meeting?") == true) {
+        myVideoStream.getVideoTracks()[0].enabled = false;
+        document.getElementById("main-left").style.visibility = "hidden";
+        document.getElementById("main-left").style.maxWidth = "0px";
+        document.getElementById("main-right").style.maxWidth = "100%";
+        document.getElementById("video-grid").style.display = "none";
+        document.getElementById("leaveRoomButton").style.display = "block";
+      }
+    }
+
+    // leave the room
+    const leaveTheRoom = () => {
+      if (confirm("Do you want to leave the room?") == true) {
+        myVideoStream.getVideoTracks()[0].enabled = false;
+        location.replace("https://my-team-prof-junior.herokuapp.com/");
+        return false;
+      } else {
+        return;
+      }
+    }
+
+    // open MyNotes in new tab
+    const openNotes = () => {
+      setTimeout(function () {
+        window.open("https://keeper-47ca2.web.app/", "_blank");
+      }, 400);
+    }
+
+    // hide and unhide chat on button click
+    function hideChat() {
+      var x = document.getElementById("main-right");
+      var y = document.getElementById("main-left");
+      var z = document.querySelector("main__chatWindow");
+      if (x.style.display === "none") {
+        x.style.display = "block";
+        z.style.height = "608px";
+        z.style.flexGrow = "1";
+      } else {
+        x.style.display = "none";
+        x.style.width = "5000px";
+      }
+    }
+
+    // enabling the invitebutton which pops out with the link of the meeting
+    const inviteButton = document.querySelector("#inviteButton");
+    inviteButton.addEventListener("click", (e) => {
+      prompt(
+        "Copy this link and send it to people you want to meet with",
+        window.location.href
+      );
+    });
+
+    // enabling the modal for games on click
+    var modal = document.getElementById("myModal");
+    var btn = document.getElementById("myBtn");
+    var span = document.getElementsByClassName("close")[0];
+    btn.onclick = function () {
+      modal.style.display = "block";
+    }
+
+    span.onclick = function () {
+      modal.style.display = "none";
+    }
+
+    window.onclick = function (event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+    // geeting the current time to display it on the user interface
+    setInterval(function () {
+      var dt = new Date();
+      document.getElementById("datetime").innerHTML = dt.toLocaleTimeString();
+    }, 1000);
+  </script>
+
+</body>
+
+</html>
